@@ -1,7 +1,8 @@
 import { motion } from 'motion/react';
-import { ShieldCheck, Users, Calculator, Award } from 'lucide-react';
+import { ShieldCheck, Users, Calculator, Award, Camera } from 'lucide-react';
+import { useState, useRef, ChangeEvent } from 'react';
 
-const WHY_US_DATA = [
+const INITIAL_WHY_US_DATA = [
   {
     id: 1,
     title: '13년 전통의 정직함',
@@ -34,6 +35,26 @@ const WHY_US_DATA = [
 ];
 
 export default function WhyUs() {
+  const [whyUsData, setWhyUsData] = useState(INITIAL_WHY_US_DATA);
+  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const handleImageClick = (index: number) => {
+    fileInputRefs.current[index]?.click();
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newData = [...whyUsData];
+        newData[index] = { ...newData[index], image: reader.result as string };
+        setWhyUsData(newData);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <section id="why-us" className="py-32 px-6 bg-[#111111]">
       <div className="max-w-7xl mx-auto">
@@ -57,7 +78,7 @@ export default function WhyUs() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
-          {WHY_US_DATA.map((item, index) => (
+          {whyUsData.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 30 }}
@@ -84,12 +105,26 @@ export default function WhyUs() {
               </div>
 
               <div className="mt-auto pt-8">
-                <div className="aspect-video rounded-2xl overflow-hidden bg-white/5">
+                <div 
+                  className="relative aspect-video rounded-2xl overflow-hidden bg-white/5 cursor-pointer group/img"
+                  onClick={() => handleImageClick(index)}
+                >
                   <img 
                     src={item.image} 
                     alt={item.title}
                     className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
                     referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                    <Camera className="text-white w-8 h-8" />
+                    <span className="text-white text-xs font-bold">이미지 변경</span>
+                  </div>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    ref={(el) => (fileInputRefs.current[index] = el)}
+                    onChange={(e) => handleImageChange(e, index)}
                   />
                 </div>
               </div>

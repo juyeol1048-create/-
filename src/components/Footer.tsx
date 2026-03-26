@@ -1,4 +1,5 @@
 import { Instagram, Youtube, MessageCircle, Facebook } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -7,8 +8,26 @@ export default function Footer() {
     <footer className="py-20 px-6 border-t border-white/5 bg-black">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
-          <a href="#" className="text-2xl font-black tracking-tighter text-white">
-            PHONEPLUS<span className="text-white/40">2013</span>
+          <a href="#" className="flex items-center gap-4 text-2xl font-black tracking-tighter text-white">
+            <motion.img 
+              src="/mascot.png" 
+              alt="Phoneplus Logo" 
+              className="w-12 h-12 object-contain"
+              animate={{ 
+                y: [0, -5, 0],
+              }}
+              transition={{ 
+                duration: 3, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+            <span>
+              PHONEPLUS<span className="text-white/40">2013</span>
+            </span>
           </a>
           
           <div className="flex items-center gap-8">

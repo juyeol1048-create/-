@@ -1,5 +1,5 @@
-import { motion } from 'motion/react';
-import { Smartphone, Zap, ShieldCheck, Gift, ChevronRight, Camera } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Smartphone, Zap, ShieldCheck, Gift, ChevronRight, Camera, Plus, X as CloseIcon } from 'lucide-react';
 import { useState, useRef, ChangeEvent } from 'react';
 
 const INITIAL_PRODUCTS = [
@@ -25,8 +25,48 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: 3,
-    brand: 'apple',
+    brand: 'samsung',
     category: 'latest',
+    name: 'Galaxy Z Fold6',
+    tagline: '대화면으로 즐기는 압도적 몰입감',
+    features: ['7.6형 대화면', 'S펜 지원', '멀티태스킹 최적화'],
+    price: '월 52,400원부터',
+    image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    id: 10,
+    brand: 'samsung',
+    category: 'latest',
+    name: 'Galaxy S24+',
+    tagline: '더 커진 화면, 더 강력한 성능',
+    features: ['6.7형 디스플레이', '대용량 배터리', '강력한 프로세서'],
+    price: '월 35,200원부터',
+    image: 'https://images.unsplash.com/photo-1707148560317-09418659546b?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    id: 11,
+    brand: 'samsung',
+    category: 'latest',
+    name: 'Galaxy S24',
+    tagline: '한 손에 쏙 들어오는 완벽함',
+    features: ['컴팩트한 사이즈', '세련된 디자인', '뛰어난 카메라'],
+    price: '월 28,900원부터',
+    image: 'https://images.unsplash.com/photo-1707148560317-09418659546b?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    id: 12,
+    brand: 'samsung',
+    category: 'latest',
+    name: 'Galaxy A55 5G',
+    tagline: '합리적인 가격의 프리미엄 경험',
+    features: ['선명한 디스플레이', '대용량 배터리', '뛰어난 가성비'],
+    price: '월 15,200원부터',
+    image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    id: 3,
+    brand: 'apple',
+    category: 'iphone',
     name: 'iPhone 15 Pro',
     tagline: '티타늄. 그 이상의 강력함',
     features: ['A17 Pro 칩', '티타늄 디자인', '동작 버튼'],
@@ -100,6 +140,8 @@ const INITIAL_PRODUCTS = [
 
 export default function Services() {
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [newProductCategory, setNewProductCategory] = useState('latest');
 
   const handleImageChange = (id: number, file: File) => {
     const reader = new FileReader();
@@ -113,11 +155,27 @@ export default function Services() {
     reader.readAsDataURL(file);
   };
 
+  const addNewProduct = (category: string) => {
+    const newId = Math.max(...products.map(p => p.id)) + 1;
+    const brand = category === 'iphone' ? 'apple' : 'samsung';
+    const newProduct = {
+      id: newId,
+      brand: brand,
+      category: category,
+      name: '새로운 모델',
+      tagline: '설명을 입력해주세요',
+      features: ['기능 1', '기능 2', '기능 3'],
+      price: '월 0원부터',
+      image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=600',
+    };
+    setProducts([...products, newProduct]);
+  };
+
   const latestProducts = products.filter(p => p.category === 'latest');
-  const iphoneProducts = products.filter(p => p.category === 'iphone' || (p.brand === 'apple' && p.category === 'latest'));
+  const iphoneProducts = products.filter(p => p.category === 'iphone' || (p.brand === 'apple' && p.category === 'latest' && p.id === 3)); // Adjusted for initial data
   const dealProducts = products.filter(p => p.category === 'deal');
 
-  const ProductGrid = ({ items, title, id }: { items: typeof products, title: string, id: string }) => (
+  const ProductGrid = ({ items, title, id, category }: { items: typeof products, title: string, id: string, category: string }) => (
     <div id={id} className="mb-32">
       <div className="text-center mb-24">
         <motion.h2 
@@ -140,6 +198,18 @@ export default function Services() {
             onImageChange={handleImageChange} 
           />
         ))}
+        {/* Add Product Button */}
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => addNewProduct(category)}
+          className="flex flex-col items-center justify-center p-10 border-2 border-dashed border-white/10 rounded-[40px] cursor-pointer hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-500 group min-h-[500px]"
+        >
+          <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 group-hover:bg-blue-600/20 transition-colors">
+            <Plus className="w-10 h-10 text-white/40 group-hover:text-blue-500" />
+          </div>
+          <span className="text-white/40 font-bold uppercase tracking-widest group-hover:text-white transition-colors">기기 추가하기</span>
+        </motion.div>
       </div>
     </div>
   );
@@ -147,9 +217,9 @@ export default function Services() {
   return (
     <section className="py-32 px-6 bg-[#000000]">
       <div className="max-w-7xl mx-auto">
-        <ProductGrid items={latestProducts} title="최신폰 라인업" id="products" />
-        <ProductGrid items={iphoneProducts} title="아이폰 라인업" id="iphone-lineup" />
-        <ProductGrid items={dealProducts} title="특가폰 라인업" id="special-offers" />
+        <ProductGrid items={latestProducts} title="삼성폰 라인업" id="products" category="latest" />
+        <ProductGrid items={iphoneProducts} title="아이폰 라인업" id="iphone-lineup" category="iphone" />
+        <ProductGrid items={dealProducts} title="특가폰 라인업" id="special-offers" category="deal" />
 
         {/* Features Grid */}
         <div className="mt-32 grid grid-cols-2 lg:grid-cols-4 gap-8 border-t border-white/10 pt-20">

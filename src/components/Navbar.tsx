@@ -25,8 +25,21 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'py-4 bg-black/80 backdrop-blur-md border-b border-white/5' : 'py-6 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <a href="#" className="text-xl font-black tracking-tighter text-white">
-          PHONEPLUS<span className="text-white/40">2013</span>
+        <a href="#" className="flex items-center gap-3 text-xl font-black tracking-tighter text-white">
+          <motion.img 
+            src="/mascot.png" 
+            alt="Phoneplus Logo" 
+            className="w-10 h-10 object-contain"
+            initial={{ rotate: -10 }}
+            animate={{ rotate: 10 }}
+            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+          />
+          <span>
+            PHONEPLUS<span className="text-white/40">2013</span>
+          </span>
         </a>
 
         {/* Desktop Menu */}

@@ -34,26 +34,33 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#000000] pt-20"
     >
-      {/* Background Image with Overlay */}
+      {/* Background with Premium Samsung-style Gradients */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Deep background texture/image - More subtle and tech-oriented */}
+        <div className="absolute inset-0 bg-[#030303]" />
         <img 
-          src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1920" 
-          alt="Premium Dark Texture"
-          className="w-full h-full object-cover opacity-60 scale-110"
+          src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1920" 
+          alt="Premium Dark Abstract"
+          className="w-full h-full object-cover opacity-20 scale-110 mix-blend-overlay"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
         
-        {/* Parallax Glows */}
+        {/* Layered Overlays for Depth and Contrast */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,20,25,0)_0%,rgba(0,0,0,0.8)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(59,130,246,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(147,51,234,0.04),transparent_50%)]" />
+        
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.03]" 
+          style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }} 
+        />
+        
+        {/* Parallax Glows - Refined and deeper */}
         <motion.div 
           style={{ x: rotateY, y: rotateX }}
-          className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-900/20 rounded-full blur-[120px]" 
-        />
-        <motion.div 
-          style={{ x: rotateX, y: rotateY }}
-          className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[100px]" 
+          className="absolute top-[-20%] right-[-10%] w-[80%] h-[80%] bg-blue-500/5 rounded-full blur-[180px]" 
         />
       </div>
 
@@ -65,23 +72,31 @@ export default function Hero() {
           transition={{ duration: 1, ease: "easeOut" }}
           className="text-left"
         >
-          <motion.span 
+          <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-block text-sm font-bold tracking-[0.3em] text-white/40 mb-6 uppercase"
+            className="flex items-center gap-3 mb-8"
           >
-            Premium Mobile Experience
-          </motion.span>
+            <div className="w-8 h-[1px] bg-blue-400" />
+            <span className="text-xs font-bold tracking-[0.4em] text-blue-400 uppercase">
+              Premium Mobile Experience
+            </span>
+          </motion.div>
           
-          <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-[1.1] tracking-tight text-white break-keep">
-            최적의 요금을 <br />
-            <span className="text-blue-500 italic drop-shadow-[0_0_30px_rgba(59,130,246,0.5)]">설계해드립니다</span>
+          <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-[1.05] tracking-tighter text-white break-keep">
+            <span className="inline-block mb-2 text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              최적의 요금을
+            </span>
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-blue-500 to-indigo-400 drop-shadow-[0_0_40px_rgba(59,130,246,0.5)]">
+              설계해드립니다
+            </span>
           </h1>
           
-          <p className="text-white/60 text-lg md:text-xl max-w-lg mb-12 leading-relaxed font-light break-keep">
+          <p className="text-white/80 text-lg md:text-xl max-w-lg mb-12 leading-relaxed font-light break-keep">
             Phoneplus는 당신의 사용 패턴을 분석하여 <br />
-            가장 합리적이고 완벽한 모바일 라이프를 제안합니다.
+            <span className="text-white font-normal">가장 합리적이고 완벽한</span> 모바일 라이프를 제안합니다.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -126,8 +141,9 @@ export default function Hero() {
                 className="w-full h-full scale-[1.02]" // Slightly scale to hide potential thin edges
               ></iframe>
               
-              {/* Subtle Overlay to blend video edges */}
-              <div className="absolute inset-0 pointer-events-none border-[12px] border-black/5 rounded-3xl" />
+              {/* Subtle Overlay to blend video edges and add reflection */}
+              <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/5 via-transparent to-white/10 opacity-40" />
+              <div className="absolute inset-0 pointer-events-none border-[1px] border-white/20 rounded-3xl" />
             </div>
             
             {/* Floating Badge (Overlay on Video) */}
@@ -142,6 +158,35 @@ export default function Hero() {
 
             {/* Decorative Corner Accents */}
             <div className="absolute -bottom-4 -left-4 w-24 h-24 border-l-2 border-b-2 border-blue-500/30 rounded-bl-3xl pointer-events-none" />
+
+            {/* 3D Mascot - Floating near the video */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5, x: 100 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+              style={{ rotateX, rotateY }}
+              className="absolute -bottom-20 -right-20 w-64 h-64 z-30 pointer-events-none hidden lg:block"
+            >
+              <motion.img
+                src="/mascot.png" 
+                alt="Phoneplus Mascot"
+                animate={{ 
+                  y: [0, -20, 0],
+                  rotate: [-2, 2, -2]
+                }}
+                transition={{ 
+                  duration: 5, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                onError={(e) => {
+                  // Fallback to a placeholder if the file is not found
+                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400";
+                  (e.target as HTMLImageElement).style.opacity = "0.2";
+                }}
+              />
+            </motion.div>
           </div>
         </motion.div>
       </div>
